@@ -1,4 +1,5 @@
 const Doctor = require("../Controllers/Doctor");
+const Regionals = require("../Controllers/Regionals");
 const JWT = require("../utils/jwt");
 
 const Router = require("express").Router();
@@ -26,5 +27,7 @@ Router.use(async (req, res, next) => {
 });
 
 Router.get("/doctor", Doctor.get);
+
+Router.get("/regionals", Regionals.get);
 
 module.exports = Router;
