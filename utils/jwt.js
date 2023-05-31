@@ -13,7 +13,13 @@ const JWT = {
     );
   },
   verify: (token) => {
-    return jwt.verify(token, privateKey);
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, privateKey, function (err, decoded) {
+        if (err) reject(err);
+
+        resolve(decoded);
+      });
+    });
   },
 };
 
