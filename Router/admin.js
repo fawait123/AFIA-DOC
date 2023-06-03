@@ -1,6 +1,7 @@
 const Doctor = require("../Controllers/Doctor");
 const Regionals = require("../Controllers/Regionals");
 const JWT = require("../utils/jwt");
+const { upload } = require("../utils/upload");
 
 const Router = require("express").Router();
 
@@ -26,8 +27,13 @@ Router.use(async (req, res, next) => {
   }
 });
 
+// route doctor
 Router.get("/doctor", Doctor.get);
+Router.post("/doctor", upload.single("photos"), Doctor.post);
+Router.put("/doctor", upload.single("photos"), Doctor.put);
+Router.delete("/doctor", upload.single("photos"), Doctor.delete);
 
+// route regionals
 Router.get("/regionals", Regionals.get);
 
 module.exports = Router;
