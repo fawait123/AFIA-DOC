@@ -9,6 +9,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Address.belongsTo(models.Regionals, {
+        foreignKey: "provinceID",
+        as: "province",
+      });
+
+      Address.belongsTo(models.Regionals, {
+        foreignKey: "districtID",
+        as: "district",
+      });
+
+      Address.belongsTo(models.Regionals, {
+        foreignKey: "subdistrictID",
+        as: "subdistrict",
+      });
+
+      Address.belongsTo(models.Regionals, {
+        foreignKey: "villageID",
+        as: "village",
+      });
     }
   }
   Address.init(
@@ -49,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
       },
       deletedAt: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATE,
       },
     },
