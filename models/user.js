@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
       role_id: {
         type: DataTypes.STRING,
       },
+      is_active: {
+        type: DataTypes.BOOLEAN,
+      },
       token: {
         type: DataTypes.STRING,
       },

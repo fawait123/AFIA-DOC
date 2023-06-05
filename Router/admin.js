@@ -1,5 +1,6 @@
 const Doctor = require("../Controllers/Doctor");
 const Regionals = require("../Controllers/Regionals");
+const User = require("../Controllers/User");
 const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
 
@@ -32,6 +33,12 @@ Router.get("/doctor", Doctor.get);
 Router.post("/doctor", upload.single("photos"), Doctor.post);
 Router.put("/doctor", upload.single("photos"), Doctor.put);
 Router.delete("/doctor", upload.single("photos"), Doctor.delete);
+
+// route user
+Router.get("/user", User.get);
+Router.post("/user", User.post);
+Router.put("/user", User.put);
+Router.delete("/user", User.delete);
 
 // route regionals
 Router.get("/regionals", Regionals.get);
