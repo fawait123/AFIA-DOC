@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
   Specialist.init(
     {
       name: DataTypes.STRING,
+      deletedAt: {
+        type: DataTypes.DATE,
+      },
     },
     {
       sequelize,

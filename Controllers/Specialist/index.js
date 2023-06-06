@@ -46,6 +46,7 @@ module.exports = {
 
       const specialist = await Model.Specialist.create({
         name: body.name,
+        id: uuidv4(),
       });
 
       return res.sendData(200, "success", specialist);
