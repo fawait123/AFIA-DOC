@@ -1,5 +1,6 @@
 const Doctor = require("../Controllers/Doctor");
 const Regionals = require("../Controllers/Regionals");
+const Specialist = require("../Controllers/Specialist");
 const User = require("../Controllers/User");
 const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
@@ -42,5 +43,11 @@ Router.delete("/user", User.delete);
 
 // route regionals
 Router.get("/regionals", Regionals.get);
+
+// route specialist
+Router.get("/specialist", Specialist.get);
+Router.post("/specialist", Specialist.post);
+Router.put("/specialist", Specialist.put);
+Router.delete("/specialist", Specialist.delete);
 
 module.exports = Router;
