@@ -1,6 +1,8 @@
 const Doctor = require("../Controllers/Doctor");
 const Regionals = require("../Controllers/Regionals");
+const Role = require("../Controllers/Role");
 const Specialist = require("../Controllers/Specialist");
+const Sync = require("../Controllers/Sync");
 const User = require("../Controllers/User");
 const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
@@ -39,6 +41,7 @@ Router.delete("/doctor", upload.single("photos"), Doctor.delete);
 Router.get("/user", User.get);
 Router.post("/user", User.post);
 Router.put("/user", User.put);
+Router.put("/user/approve", User.approve);
 Router.delete("/user", User.delete);
 
 // route regionals
@@ -49,5 +52,14 @@ Router.get("/specialist", Specialist.get);
 Router.post("/specialist", Specialist.post);
 Router.put("/specialist", Specialist.put);
 Router.delete("/specialist", Specialist.delete);
+
+// route role
+Router.get("/role", Role.get);
+Router.post("/role", Role.post);
+Router.put("/role", Role.put);
+Router.delete("/role", Role.delete);
+
+// sync access
+Router.get("/sync", Sync.sync);
 
 module.exports = Router;

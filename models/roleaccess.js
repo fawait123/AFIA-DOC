@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.STRING,
       },
-      role_id: {
+      roleID: {
         type: DataTypes.STRING,
       },
-      group: {
+      accessID: {
         type: DataTypes.STRING,
       },
       createdAt: {
