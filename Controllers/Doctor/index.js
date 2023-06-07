@@ -51,6 +51,11 @@ module.exports = {
               },
             ],
           },
+          {
+            model: Model.Specialist,
+            as: "specialist",
+            required: false,
+          },
         ],
       });
 

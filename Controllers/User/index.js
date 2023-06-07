@@ -140,4 +140,34 @@ module.exports = {
       return res.sendData(500, error.message);
     }
   },
+  approve: async (req, res) => {
+    try {
+      const query = req.query;
+
+      const user = await Model.User.findOne({
+        where: {
+          id: query.id,
+        },
+      });
+
+      if (!user) {
+        return res.sendData(404, "Data tidak ditemukan");
+      }
+
+      await Model.User.update(
+        {
+          is_active: !user.is_active,
+        },
+        {
+          where: {
+            id: query.id,
+          },
+        }
+      );
+
+      return res.sendData(200, "success", user);
+    } catch (error) {
+      return res.sendData(500, error.message);
+    }
+  },
 };

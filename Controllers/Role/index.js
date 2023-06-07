@@ -1,4 +1,4 @@
-const SpecialistSchema = require("../../schema/SpecialistSchema");
+const RoleSchema = require("../../schema/RoleSchema");
 const Pagination = require("../../utils/pagination");
 const { removeFile } = require("../../utils/upload");
 const Model = require("./../../models");
@@ -16,24 +16,17 @@ module.exports = {
         where.id = query.id;
       }
 
-      const doctor = await Model.Specialist.findAndCountAll({
+      const Role = await Model.Role.findAndCountAll({
         ...pagination.getPagination(),
         distinct: true,
         where: {
           ...pagination.getSearch(),
           ...where,
         },
-        include: [
-          {
-            model: Model.Doctor,
-            as: "doctors",
-            required: false,
-          },
-        ],
       });
 
       return res.sendData(200, "success", {
-        ...doctor,
+        ...Role,
         page: pagination.getPagination().offset + 1,
         limit: pagination.getPagination().limit,
       });
@@ -45,53 +38,49 @@ module.exports = {
     try {
       const body = req.body;
 
-      const { error, value } = SpecialistSchema.validate({ ...body });
+      const { error, value } = RoleSchema.validate({ ...body });
 
       if (error) {
         return res.sendData(400, error.message);
       }
 
-      const specialist = await Model.Specialist.create({
-        name: body.name,
-        id: uuidv4(),
-      });
+      const role = await Model.Role.create({ id: uuidv4(), ...body });
 
-      return res.sendData(200, "success", specialist);
+      return res.sendData(200, "success", role);
     } catch (error) {
       return res.sendData(500, error.message);
     }
   },
   put: async (req, res) => {
     try {
-      const query = req.query;
       const body = req.body;
+      const query = req.query;
 
-      const { error, value } = SpecialistSchema.validate({ ...body });
+      const { error, value } = RoleSchema.validate({ ...body });
 
       if (error) {
         return res.sendData(400, error.message);
       }
 
-      const specialist = await Model.Specialist.findOne({
+      const role = await Model.Role.findOne({
         where: {
           id: query.id,
         },
       });
 
-      if (!specialist) {
+      if (!role) {
         return res.sendData(404, "Data tidak ditemukan");
       }
-
-      await Model.Specialist.update(
+      await Model.Role.update(
+        { ...body },
         {
-          name: body.name,
-        },
-        {
-          id: query.id,
+          where: {
+            id: query.id,
+          },
         }
       );
 
-      return res.sendData(200, "success", specialist);
+      return res.sendData(200, "success", role);
     } catch (error) {
       return res.sendData(500, error.message);
     }
@@ -99,24 +88,23 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const query = req.query;
-
-      const specialist = await Model.Specialist.findOne({
+      const role = await Model.Role.findOne({
         where: {
           id: query.id,
         },
       });
 
-      if (!specialist) {
+      if (!role) {
         return res.sendData(404, "Data tidak ditemukan");
       }
 
-      await Model.Specialist.destroy({
+      await Model.Role.destroy({
         where: {
           id: query.id,
         },
       });
 
-      return res.sendData(200, "success", specialist);
+      return res.sendData(200, "success", {});
     } catch (error) {
       return res.sendData(500, error.message);
     }
