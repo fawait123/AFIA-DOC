@@ -26,6 +26,27 @@ module.exports = {
           ...pagination.getSearch(),
           ...where,
         },
+        include: [
+          {
+            model: Model.Role,
+            as: "role",
+            required: false,
+            include: [
+              {
+                model: Model.RoleAccess,
+                as: "roleaccesses",
+                required: false,
+                include: [
+                  {
+                    model: Model.Access,
+                    as: "access",
+                    required: false,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       });
 
       return res.sendData(200, "success", {

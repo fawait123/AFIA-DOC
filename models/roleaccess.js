@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      RoleAccess.belongsTo(models.Access, {
+        foreignKey: "accessID",
+        as: "access",
+      });
     }
   }
   RoleAccess.init(
@@ -25,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       accessID: {
         type: DataTypes.STRING,
       },
+      group: {
+        type: DataTypes.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -34,13 +41,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
       },
       deletedAt: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATE,
       },
     },
     {
       sequelize,
-      paranoid: true,
       modelName: "RoleAccess",
     }
   );

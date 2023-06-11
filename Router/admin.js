@@ -4,6 +4,7 @@ const Role = require("../Controllers/Role");
 const Specialist = require("../Controllers/Specialist");
 const Sync = require("../Controllers/Sync");
 const User = require("../Controllers/User");
+const { accessMiddleware } = require("../middleware/access");
 const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
 
@@ -32,34 +33,41 @@ Router.use(async (req, res, next) => {
 });
 
 // route doctor
-Router.get("/doctor", Doctor.get);
-Router.post("/doctor", upload.single("photos"), Doctor.post);
-Router.put("/doctor", upload.single("photos"), Doctor.put);
-Router.delete("/doctor", upload.single("photos"), Doctor.delete);
+Router.get("/doctor", accessMiddleware, Doctor.get);
+Router.post("/doctor", accessMiddleware, upload.single("photos"), Doctor.post);
+Router.put("/doctor", accessMiddleware, upload.single("photos"), Doctor.put);
+Router.delete(
+  "/doctor",
+  [accessMiddleware, upload.single("photos")],
+  Doctor.delete
+);
 
 // route user
-Router.get("/user", User.get);
-Router.post("/user", User.post);
-Router.put("/user", User.put);
-Router.put("/user/approve", User.approve);
-Router.delete("/user", User.delete);
+Router.get("/user", accessMiddleware, User.get);
+Router.post("/user", accessMiddleware, User.post);
+Router.put("/user", accessMiddleware, User.put);
+Router.put("/user/approve", accessMiddleware, User.approve);
+Router.delete("/user", accessMiddleware, User.delete);
 
 // route regionals
-Router.get("/regionals", Regionals.get);
+Router.get("/regionals", accessMiddleware, Regionals.get);
 
 // route specialist
-Router.get("/specialist", Specialist.get);
-Router.post("/specialist", Specialist.post);
-Router.put("/specialist", Specialist.put);
-Router.delete("/specialist", Specialist.delete);
+Router.get("/specialist", accessMiddleware, Specialist.get);
+Router.post("/specialist", accessMiddleware, Specialist.post);
+Router.put("/specialist", accessMiddleware, Specialist.put);
+Router.delete("/specialist", accessMiddleware, Specialist.delete);
 
 // route role
-Router.get("/role", Role.get);
-Router.post("/role", Role.post);
-Router.put("/role", Role.put);
-Router.delete("/role", Role.delete);
+Router.get("/role", accessMiddleware, Role.get);
+Router.post("/role", accessMiddleware, Role.post);
+Router.put("/role", accessMiddleware, Role.put);
+Router.delete("/role", accessMiddleware, Role.delete);
+
+// route role access
+Router.post("/role/group", accessMiddleware, Role.group);
 
 // sync access
-Router.get("/sync", Sync.sync);
+Router.get("/sync", accessMiddleware, Sync.sync);
 
 module.exports = Router;

@@ -23,6 +23,20 @@ module.exports = {
           ...pagination.getSearch(),
           ...where,
         },
+        include: [
+          {
+            model: Model.RoleAccess,
+            as: "roleaccesses",
+            required: false,
+            include: [
+              {
+                model: Model.Access,
+                as: "access",
+                required: false,
+              },
+            ],
+          },
+        ],
       });
 
       return res.sendData(200, "success", {
@@ -105,6 +119,30 @@ module.exports = {
       });
 
       return res.sendData(200, "success", {});
+    } catch (error) {
+      return res.sendData(500, error.message);
+    }
+  },
+  group: async (req, res) => {
+    try {
+      const body = req.body;
+
+      let roleaccess = await Model.RoleAccess.findOne({
+        where: {
+          roleID: body.roleID,
+          accessID: body.accessID,
+        },
+      });
+
+      if (!roleaccess) {
+        roleaccess = await Model.RoleAccess.create({
+          roleID: body.roleID,
+          accessID: body.accessID,
+          id: uuidv4(),
+        });
+      }
+
+      return res.sendData(200, "success", roleaccess);
     } catch (error) {
       return res.sendData(500, error.message);
     }
