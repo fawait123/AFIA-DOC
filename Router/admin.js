@@ -1,3 +1,4 @@
+const Booking = require("../Controllers/Booking");
 const Doctor = require("../Controllers/Doctor");
 const Regionals = require("../Controllers/Regionals");
 const Role = require("../Controllers/Role");
@@ -66,6 +67,10 @@ Router.delete("/role", accessMiddleware, Role.delete);
 
 // route role access
 Router.post("/role/group", accessMiddleware, Role.group);
+
+// route booking
+Router.post("/booking", Booking.post);
+Router.put("/booking", Booking.put);
 
 // sync access
 Router.get("/sync", accessMiddleware, Sync.sync);
