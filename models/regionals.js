@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Regionals",
       paranoid: true,
+      tableName: "regionals",
     }
   );
   return Regionals;

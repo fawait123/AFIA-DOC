@@ -24,7 +24,6 @@ app.use((req, res, next) => {
   return res.sendNotFound();
 });
 
-// app.listen(PORT, () => {
-//   console.log("App listening on http://localhost:" + PORT);
-// });
-app.listen();
+app.listen(PORT, () => {
+  console.log("App listening on http://localhost:" + PORT);
+});

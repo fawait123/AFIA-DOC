@@ -44,6 +44,14 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
       },
+      prefix: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      prefixID: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -60,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
+      tableName: "users",
       paranoid: true,
     }
   );
