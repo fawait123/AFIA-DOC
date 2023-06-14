@@ -5,6 +5,7 @@ const Role = require("../Controllers/Role");
 const Specialist = require("../Controllers/Specialist");
 const Sync = require("../Controllers/Sync");
 const User = require("../Controllers/User");
+const Model = require("./../models");
 const { accessMiddleware } = require("../middleware/access");
 const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
@@ -20,14 +21,28 @@ Router.use(async (req, res, next) => {
 
     let token = authorization.split(" ")[1];
 
-    await JWT.verify(token)
-      .then((data) => {
-        req.account = data.data;
-        return next();
-      })
-      .catch((err) => {
-        return res.sendData(401, err.message);
-      });
+    const check = await Model.User.findOne({
+      where: {
+        token: token,
+      },
+    });
+
+    if (!check) {
+      return res.sendData(401, "Anauthenticate");
+    }
+
+    req.account = check;
+
+    return next();
+
+    // await JWT.verify(token)
+    //   .then((data) => {
+    //     req.account = data.data;
+    //     return next();
+    //   })
+    //   .catch((err) => {
+    //     return res.sendData(401, err.message);
+    //   });
   } catch (error) {
     return res.sendData(500, error.message);
   }
@@ -69,8 +84,10 @@ Router.delete("/role", accessMiddleware, Role.delete);
 Router.post("/role/group", accessMiddleware, Role.group);
 
 // route booking
-Router.post("/booking", Booking.post);
-Router.put("/booking", Booking.put);
+Router.get("/booking", accessMiddleware, Booking.get);
+Router.post("/booking", accessMiddleware, Booking.post);
+Router.put("/booking", accessMiddleware, Booking.put);
+Router.put("/booking/done", accessMiddleware, Booking.done);
 
 // sync access
 Router.get("/sync", accessMiddleware, Sync.sync);

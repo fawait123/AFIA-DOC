@@ -5,12 +5,15 @@ const fs = require("fs");
 const JWT = {
   login: (user) => {
     const signOptions = {
-      issuer: process.env.JWT_ISSUER || "PDIP",
+      issuer: process.env.JWT_ISSUER || "AFIA",
       expiresIn: "12h",
-      algorithm: "RS256",
+      algorithm: "RSA256",
+      mutatePayload: true,
+      allowInsecureKeySizes: true,
+      allowInvalidAsymmetricKeyTypes: true,
     };
     const privateKey = fs.readFileSync("./private.key", "utf8");
-    const token = jwt.sign({ user }, privateKey, signOptions);
+    const token = jwt.sign({ data: user }, privateKey, signOptions);
 
     return token;
   },
