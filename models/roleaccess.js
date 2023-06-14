@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "RoleAccess",
+      tableName: "roleaccesses",
     }
   );
   return RoleAccess;

@@ -2,6 +2,7 @@ const DoctorSchema = require("../../schema/DoctorSchema");
 const Pagination = require("../../utils/pagination");
 const { removeFile } = require("../../utils/upload");
 const Model = require("./../../models");
+const sha256 = require("js-sha256");
 const { v4: uuidv4 } = require("uuid");
 
 module.exports = {
@@ -97,6 +98,31 @@ module.exports = {
         photos: file.filename,
       });
 
+      let checkAccount = await Model.User.findOne({
+        where: {
+          username: doctor.NIK,
+        },
+      });
+
+      let account;
+
+      let hash = sha256.create();
+
+      hash.update("12345678");
+
+      if (checkAccount) {
+        account = await Model.User.create({
+          id: uuidv4(),
+          username: doctor.NIK,
+          password: "$" + hash.hex(),
+          email: doctor.email,
+          name: body.name,
+          is_active: true,
+          prefix: "Doctor",
+          prefixID: doctor.id,
+        });
+      }
+
       const address = await Model.Address.create({
         id: uuidv4(),
         parentID: doctor.id,
@@ -108,7 +134,7 @@ module.exports = {
         type: body.type,
       });
 
-      return res.sendData(200, "success", { doctor, address });
+      return res.sendData(200, "success", { doctor, address, account });
     } catch (error) {
       removeFile(req.file);
       return res.sendData(500, error.message);
@@ -134,6 +160,44 @@ module.exports = {
       await doctor.update({
         ...body,
       });
+
+      const checkAccount = await Model.User.findOne({
+        where: {
+          username: doctor.NIK,
+        },
+      });
+
+      let account;
+      if (checkAccount) {
+        // update
+        await Model.User.update(
+          {
+            email: doctor.email,
+            name: body.name,
+            username: doctor.NIK,
+          },
+          {
+            where: {
+              id: checkAccount.id,
+            },
+          }
+        );
+      } else {
+        // create
+        let hash = sha256.create();
+        hash.update("12345678");
+
+        account = await Model.User.create({
+          id: uuidv4(),
+          username: doctor.NIK,
+          password: "$" + hash.hex(),
+          email: doctor.email,
+          name: body.name,
+          is_active: true,
+          prefix: "Doctor",
+          prefixID: doctor.id,
+        });
+      }
 
       return res.sendData(200, "success", doctor);
     } catch (error) {

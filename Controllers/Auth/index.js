@@ -35,6 +35,7 @@ const Auth = {
         password: "$" + hash.hex(),
         email: body.email,
         name: body.name,
+        is_active: false,
       }).then((response) => {
         return res.sendData(200, "success", response);
       });
@@ -63,6 +64,10 @@ const Auth = {
       const hashPassword = "$" + hash.hex();
       if (hashPassword != user.password) {
         return res.sendData(404, "Username atau password tidak ditemukan");
+      }
+
+      if (user.is_active == false) {
+        return res.sendData(400, "User is inactive");
       }
 
       let token = JWT.login(user);
