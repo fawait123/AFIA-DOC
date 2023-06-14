@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const Model = require("./../../models");
 const LoginSchema = require("../../schema/LoginSchema");
 const JWT = require("../../utils/jwt");
+const generateToken = require("../../utils/generateToken");
 
 const Auth = {
   register: async (req, res) => {
@@ -70,7 +71,7 @@ const Auth = {
         return res.sendData(400, "User is inactive");
       }
 
-      let token = JWT.login(user);
+      let token = generateToken(user.username, user.password);
 
       await user.update({
         token: token,
