@@ -74,6 +74,4 @@ Router.put("/booking", Booking.put);
 
 // sync access
 Router.get("/sync", accessMiddleware, Sync.sync);
-
-//
 module.exports = Router;
