@@ -9,6 +9,8 @@ const Model = require("./../models");
 const { accessMiddleware } = require("../middleware/access");
 const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
+const Chatt = require("../Controllers/Chatt");
+const Patient = require("../Controllers/Patient");
 
 const Router = require("express").Router();
 
@@ -84,13 +86,22 @@ Router.delete("/role", accessMiddleware, Role.delete);
 Router.post("/role/group", accessMiddleware, Role.group);
 
 // route booking
-Router.get("/booking", accessMiddleware, Booking.get);
-Router.post("/booking", accessMiddleware, Booking.post);
-Router.put("/booking", accessMiddleware, Booking.put);
-Router.put("/booking/done", accessMiddleware, Booking.done);
+Router.get("/booking", Booking.get);
+Router.post("/booking", Booking.post);
+Router.put("/booking", Booking.put);
+Router.put("/booking/done", Booking.done);
 
 // sync access
 Router.get("/sync", accessMiddleware, Sync.sync);
 
-//
+//route chatt
+Router.get("/chatt", Chatt.get);
+Router.post("/chatt", Chatt.post);
+Router.delete("/chatt", Chatt.delete);
+
+// add pasient
+Router.get("/patient", Patient.get);
+Router.post("/patient", Patient.post);
+Router.put("/patient", Patient.put);
+Router.delete("/patient", Patient.delete);
 module.exports = Router;
