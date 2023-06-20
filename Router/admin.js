@@ -11,6 +11,7 @@ const JWT = require("../utils/jwt");
 const { upload } = require("../utils/upload");
 const Chatt = require("../Controllers/Chatt");
 const Patient = require("../Controllers/Patient");
+const Registration = require("../Controllers/Registration");
 
 const Router = require("express").Router();
 
@@ -36,54 +37,41 @@ Router.use(async (req, res, next) => {
     req.account = check;
 
     return next();
-
-    // await JWT.verify(token)
-    //   .then((data) => {
-    //     req.account = data.data;
-    //     return next();
-    //   })
-    //   .catch((err) => {
-    //     return res.sendData(401, err.message);
-    //   });
   } catch (error) {
     return res.sendData(500, error.message);
   }
 });
 
 // route doctor
-Router.get("/doctor", accessMiddleware, Doctor.get);
-Router.post("/doctor", accessMiddleware, upload.single("photos"), Doctor.post);
-Router.put("/doctor", accessMiddleware, upload.single("photos"), Doctor.put);
-Router.delete(
-  "/doctor",
-  [accessMiddleware, upload.single("photos")],
-  Doctor.delete
-);
+Router.get("/doctor", Doctor.get);
+Router.post("/doctor", upload.single("photos"), Doctor.post);
+Router.put("/doctor", upload.single("photos"), Doctor.put);
+Router.delete("/doctor", upload.single("photos"), Doctor.delete);
 
 // route user
-Router.get("/user", accessMiddleware, User.get);
-Router.post("/user", accessMiddleware, User.post);
-Router.put("/user", accessMiddleware, User.put);
-Router.put("/user/approve", accessMiddleware, User.approve);
-Router.delete("/user", accessMiddleware, User.delete);
+Router.get("/user", User.get);
+Router.post("/user", User.post);
+Router.put("/user", User.put);
+Router.put("/user/approve", User.approve);
+Router.delete("/user", User.delete);
 
 // route regionals
-Router.get("/regionals", accessMiddleware, Regionals.get);
+Router.get("/regionals", Regionals.get);
 
 // route specialist
-Router.get("/specialist", accessMiddleware, Specialist.get);
-Router.post("/specialist", accessMiddleware, Specialist.post);
-Router.put("/specialist", accessMiddleware, Specialist.put);
-Router.delete("/specialist", accessMiddleware, Specialist.delete);
+Router.get("/specialist", Specialist.get);
+Router.post("/specialist", Specialist.post);
+Router.put("/specialist", Specialist.put);
+Router.delete("/specialist", Specialist.delete);
 
 // route role
-Router.get("/role", accessMiddleware, Role.get);
-Router.post("/role", accessMiddleware, Role.post);
-Router.put("/role", accessMiddleware, Role.put);
-Router.delete("/role", accessMiddleware, Role.delete);
+Router.get("/role", Role.get);
+Router.post("/role", Role.post);
+Router.put("/role", Role.put);
+Router.delete("/role", Role.delete);
 
 // route role access
-Router.post("/role/group", accessMiddleware, Role.group);
+Router.post("/role/group", Role.group);
 
 // route booking
 Router.get("/booking", Booking.get);
@@ -92,7 +80,7 @@ Router.put("/booking", Booking.put);
 Router.put("/booking/done", Booking.done);
 
 // sync access
-Router.get("/sync", accessMiddleware, Sync.sync);
+Router.get("/sync", Sync.sync);
 
 //route chatt
 Router.get("/chatt", Chatt.get);
@@ -104,4 +92,8 @@ Router.get("/patient", Patient.get);
 Router.post("/patient", Patient.post);
 Router.put("/patient", Patient.put);
 Router.delete("/patient", Patient.delete);
+
+// registration
+Router.get("/registration", Registration.get);
+Router.post("/registration", Registration.post);
 module.exports = Router;
