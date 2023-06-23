@@ -12,6 +12,7 @@ const { upload } = require("../utils/upload");
 const Chatt = require("../Controllers/Chatt");
 const Patient = require("../Controllers/Patient");
 const Registration = require("../Controllers/Registration");
+const Company = require("../Controllers/Company");
 
 const Router = require("express").Router();
 
@@ -63,6 +64,13 @@ Router.get("/specialist", Specialist.get);
 Router.post("/specialist", Specialist.post);
 Router.put("/specialist", Specialist.put);
 Router.delete("/specialist", Specialist.delete);
+
+// route company
+Router.get("/company", Company.get);
+Router.get("/company/doctor", Company.getDoctor);
+Router.post("/company", Company.post);
+Router.put("/company", Company.put);
+Router.delete("/company", Company.delete);
 
 // route role
 Router.get("/role", Role.get);

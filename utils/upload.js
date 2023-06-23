@@ -17,8 +17,10 @@ const storage = multer.diskStorage({
 });
 
 const removeFile = (file) => {
-  if (fs.existsSync(file.destination + "/" + file.filename)) {
-    fs.unlinkSync(file.destination + "/" + file.filename);
+  if (file) {
+    if (fs.existsSync(file.destination + "/" + file.filename)) {
+      fs.unlinkSync(file.destination + "/" + file.filename);
+    }
   }
 };
 const upload = multer({ storage: storage });

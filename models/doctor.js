@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "specialistID",
         as: "specialist",
       });
+
+      Doctor.belongsTo(models.Company, {
+        foreignKey: "companyID",
+        as: "company",
+      });
     }
   }
   Doctor.init(
@@ -29,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       NIK: {
+        type: DataTypes.STRING,
+      },
+      companyID: {
         type: DataTypes.STRING,
       },
       NIP: {
