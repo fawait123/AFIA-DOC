@@ -18,6 +18,13 @@ const DoctorSchema = Joi.object({
   rtrw: Joi.string().min(1),
   NIK: Joi.string().min(1).max(16),
   NIP: Joi.string().min(4),
+  company_provinceID: Joi.string().min(1),
+  company_districtID: Joi.string().min(1),
+  company_subdistrictID: Joi.string().min(1),
+  company_villageID: Joi.string().min(1),
+  company_type: Joi.string().min(1),
+  company_name: Joi.string().min(1),
+  company_optional: Joi.string(),
 });
 
 module.exports = DoctorSchema;

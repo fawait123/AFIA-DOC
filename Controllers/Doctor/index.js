@@ -1,3 +1,4 @@
+const CompanySchema = require("../../schema/CompanySchema");
 const DoctorSchema = require("../../schema/DoctorSchema");
 const Pagination = require("../../utils/pagination");
 const { removeFile } = require("../../utils/upload");
@@ -15,6 +16,10 @@ module.exports = {
 
       if (query.doctorID) {
         where.doctorID = query.doctorID;
+      }
+
+      if (query.companyID) {
+        where.companyID = query.companyID;
       }
 
       const doctor = await Model.Doctor.findAndCountAll({
@@ -57,6 +62,33 @@ module.exports = {
             as: "specialist",
             required: false,
           },
+          {
+            model: Model.Company,
+            as: "company",
+            required: false,
+            include: [
+              {
+                model: Model.Regionals,
+                as: "province",
+                required: false,
+              },
+              {
+                model: Model.Regionals,
+                as: "district",
+                required: false,
+              },
+              {
+                model: Model.Regionals,
+                as: "subdistrict",
+                required: false,
+              },
+              {
+                model: Model.Regionals,
+                as: "village",
+                required: false,
+              },
+            ],
+          },
         ],
       });
 
@@ -92,9 +124,30 @@ module.exports = {
         return res.sendData(400, "Data dokter telah terdaftar");
       }
 
+      let companyCheck = await Model.Company.findOne({
+        where: {
+          name: body.company_name.toUpperCase(),
+          type: body.company_type,
+        },
+      });
+
+      if (!companyCheck) {
+        companyCheck = await Model.Company.create({
+          id: uuidv4(),
+          name: body.company_name.toUpperCase(),
+          type: body.company_type,
+          optional: body.company_optional,
+          provinceID: body.company_provinceID,
+          districtID: body.company_districtID,
+          subdistrictID: body.company_subdistrictID,
+          villageID: body.company_villageID,
+        });
+      }
+
       const doctor = await Model.Doctor.create({
         ...body,
         id: uuidv4(),
+        companyID: companyCheck.id,
         photos: file.filename,
       });
 
